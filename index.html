@@ -259,21 +259,18 @@
 const PROXY = '/api/rss?url=';
 
 const CATS = {
-  all:          { label:'🗞 Все',                           color:'#6366f1', bg:'rgba(99,102,241,.12)',  bdr:'rgba(99,102,241,.2)' },
-  by:           { label:'🇧🇾 Беларусь',                    color:'#34d399', bg:'rgba(52,211,153,.12)',  bdr:'rgba(52,211,153,.2)' },
-  ai:           { label:'🤖 Искусственный интеллект',      color:'#60a5fa', bg:'rgba(96,165,250,.12)',  bdr:'rgba(96,165,250,.2)' },
-  cyber:        { label:'🔐 Кибербезопасность',             color:'#f87171', bg:'rgba(248,113,113,.12)', bdr:'rgba(248,113,113,.2)' },
-  infra:        { label:'🖥️ Инфраструктура (ЦОД)',         color:'#2dd4bf', bg:'rgba(45,212,191,.12)',  bdr:'rgba(45,212,191,.2)' },
-  software:     { label:'💻 Программное обеспечение',       color:'#a78bfa', bg:'rgba(167,139,250,.12)', bdr:'rgba(167,139,250,.2)' },
-  regulation:   { label:'⚖️ Регулирование',                 color:'#fbbf24', bg:'rgba(251,191,36,.12)',  bdr:'rgba(251,191,36,.2)' },
-  education:    { label:'🎓 Образование и наука',           color:'#fb923c', bg:'rgba(251,146,60,.12)',  bdr:'rgba(251,146,60,.2)' },
-  construction: { label:'🏗️ Цифровизация строительства',   color:'#818cf8', bg:'rgba(129,140,248,.12)', bdr:'rgba(129,140,248,.2)' },
-  world:        { label:'🌍 Мировые технологии',            color:'#e879f9', bg:'rgba(232,121,249,.12)', bdr:'rgba(232,121,249,.2)' },
+  all:          { label:'🗞 Все',        color:'#6366f1', bg:'rgba(99,102,241,.12)',  bdr:'rgba(99,102,241,.2)' },
+  ai:           { label:'🤖 ИИ',         color:'#60a5fa', bg:'rgba(96,165,250,.12)',  bdr:'rgba(96,165,250,.2)' },
+  cyber:        { label:'🔐 Кибербез',   color:'#f87171', bg:'rgba(248,113,113,.12)', bdr:'rgba(248,113,113,.2)' },
+  infra:        { label:'🖥️ ЦОД',        color:'#2dd4bf', bg:'rgba(45,212,191,.12)',  bdr:'rgba(45,212,191,.2)' },
+  software:     { label:'💻 Софт',       color:'#a78bfa', bg:'rgba(167,139,250,.12)', bdr:'rgba(167,139,250,.2)' },
+  regulation:   { label:'⚖️ Право',      color:'#fbbf24', bg:'rgba(251,191,36,.12)',  bdr:'rgba(251,191,36,.2)' },
+  education:    { label:'🎓 Наука',      color:'#fb923c', bg:'rgba(251,146,60,.12)',  bdr:'rgba(251,146,60,.2)' },
+  construction: { label:'🏗️ Стройка',   color:'#818cf8', bg:'rgba(129,140,248,.12)', bdr:'rgba(129,140,248,.2)' },
 };
 
 // Ключевые слова для авто-категоризации
 const KW = {
-  by:           ['беларус','белорус','минск','пвт','htp_','htdi','нтди','belarus','minsk','byfly','резидент пвт'],
   ai:           ['artificial intelligence',' ai ','neural','llm','gpt','openai','claude','gemini','deepmind','generative','chatgpt','deep learning','language model','искусственный интеллект','нейронн','large language','machine learning'],
   cyber:        ['cybersecurity','cyber security','cyberattack','hacker','data breach','vulnerability','malware','ransomware','phishing','zero-day','exploit','кибербезопасност','взлом','уязвимост','ddos','firewall'],
   infra:        ['data center','datacenter','цод','цент.{0,5}обработ','server','облак','cloud infrastructure','hosting','colocation','майнинг','высокопроизводительн','hpc','сеть передачи данных'],
@@ -286,14 +283,14 @@ const KW = {
 // ✅ Источники (май 2026) — 32 источника из 15 стран
 const SOURCES = [
   // 🇧🇾 Беларусь — Telegram каналы через RSSHub rssforever.com
-  { id:'htp',     url:'https://rsshub.rssforever.com/telegram/channel/htp_belarus',   name:'@htp_belarus',    flag:'🇧🇾', cat:'by',         max:5 },
-  { id:'apkit',   url:'https://rsshub.rssforever.com/telegram/channel/ApkitLive',     name:'@ApkitLive',      flag:'🇧🇾', cat:'by',         max:5 },
+  { id:'htp',     url:'https://rsshub.rssforever.com/telegram/channel/htp_belarus',   name:'@htp_belarus',    flag:'🇧🇾', cat:'ai',         max:5 },
+  { id:'apkit',   url:'https://rsshub.rssforever.com/telegram/channel/ApkitLive',     name:'@ApkitLive',      flag:'🇧🇾', cat:'ai',         max:5 },
 
   // 🇺🇸 США — IT-медиа
-  { id:'wired',   url:'https://www.wired.com/feed/rss',                               name:'Wired',           flag:'🇺🇸', cat:'world',       max:5 },
-  { id:'tc',      url:'https://techcrunch.com/feed/',                                 name:'TechCrunch',      flag:'🇺🇸', cat:'world',       max:5 },
-  { id:'ars',     url:'https://feeds.arstechnica.com/arstechnica/index',              name:'Ars Technica',    flag:'🇺🇸', cat:'world',       max:4 },
-  { id:'verge',   url:'https://www.theverge.com/rss/index.xml',                       name:'The Verge',       flag:'🇺🇸', cat:'world',       max:5 },
+  { id:'wired',   url:'https://www.wired.com/feed/rss',                               name:'Wired',           flag:'🇺🇸', cat:'ai',       max:5 },
+  { id:'tc',      url:'https://techcrunch.com/feed/',                                 name:'TechCrunch',      flag:'🇺🇸', cat:'ai',       max:5 },
+  { id:'ars',     url:'https://feeds.arstechnica.com/arstechnica/index',              name:'Ars Technica',    flag:'🇺🇸', cat:'ai',       max:4 },
+  { id:'verge',   url:'https://www.theverge.com/rss/index.xml',                       name:'The Verge',       flag:'🇺🇸', cat:'ai',       max:5 },
   { id:'mit',     url:'https://www.technologyreview.com/feed/',                       name:'MIT Tech Review', flag:'🇺🇸', cat:'ai',          max:4 },
   { id:'a16z',    url:'https://a16z.com/feed/',                                       name:'a16z',            flag:'🇺🇸', cat:'ai',          max:3 },
   { id:'brook',   url:'https://www.brookings.edu/feed/',                              name:'Brookings',       flag:'🇺🇸', cat:'regulation',  max:3 },
@@ -305,35 +302,35 @@ const SOURCES = [
   { id:'dark',    url:'https://www.darkreading.com/rss.xml',                         name:'Dark Reading',    flag:'🇺🇸', cat:'cyber',       max:3 },
 
   // 🇬🇧 Великобритания
-  { id:'bbc',     url:'http://feeds.bbci.co.uk/news/technology/rss.xml',             name:'BBC Technology',  flag:'🇬🇧', cat:'world',       max:5 },
-  { id:'guard',   url:'https://www.theguardian.com/technology/rss',                  name:'The Guardian',    flag:'🇬🇧', cat:'world',       max:4 },
+  { id:'bbc',     url:'http://feeds.bbci.co.uk/news/technology/rss.xml',             name:'BBC Technology',  flag:'🇬🇧', cat:'ai',       max:5 },
+  { id:'guard',   url:'https://www.theguardian.com/technology/rss',                  name:'The Guardian',    flag:'🇬🇧', cat:'ai',       max:4 },
 
   // 🇩🇪 Германия
-  { id:'heise',   url:'https://www.heise.de/rss/heise.rdf',                          name:'Heise.de',        flag:'🇩🇪', cat:'world',       max:4 },
-  { id:'t3n',     url:'https://t3n.de/rss.xml',                                      name:'t3n',             flag:'🇩🇪', cat:'world',       max:4 },
-  { id:'dw',      url:'https://rss.dw.com/rdf/rss-en-all',                           name:'Deutsche Welle',  flag:'🇩🇪', cat:'world',       max:3 },
-  { id:'spiegel', url:'https://www.spiegel.de/schlagzeilen/index.rss',               name:'Der Spiegel',     flag:'🇩🇪', cat:'world',       max:3 },
+  { id:'heise',   url:'https://www.heise.de/rss/heise.rdf',                          name:'Heise.de',        flag:'🇩🇪', cat:'ai',       max:4 },
+  { id:'t3n',     url:'https://t3n.de/rss.xml',                                      name:'t3n',             flag:'🇩🇪', cat:'ai',       max:4 },
+  { id:'dw',      url:'https://rss.dw.com/rdf/rss-en-all',                           name:'Deutsche Welle',  flag:'🇩🇪', cat:'ai',       max:3 },
+  { id:'spiegel', url:'https://www.spiegel.de/schlagzeilen/index.rss',               name:'Der Spiegel',     flag:'🇩🇪', cat:'ai',       max:3 },
 
   // 🇫🇷 Франция
-  { id:'numer',   url:'https://www.numerama.com/feed/',                              name:'Numerama',        flag:'🇫🇷', cat:'world',       max:3 },
-  { id:'f24',     url:'https://www.france24.com/en/rss',                             name:'France 24',       flag:'🇫🇷', cat:'world',       max:3 },
+  { id:'numer',   url:'https://www.numerama.com/feed/',                              name:'Numerama',        flag:'🇫🇷', cat:'ai',       max:3 },
+  { id:'f24',     url:'https://www.france24.com/en/rss',                             name:'France 24',       flag:'🇫🇷', cat:'ai',       max:3 },
 
   // 💰 Финтех / Крипто
   { id:'coindesk',url:'https://www.coindesk.com/arc/outboundfeeds/rss/',             name:'CoinDesk',        flag:'💰', cat:'software',      max:4 },
 
   // 🌏 Азия
-  { id:'jt',      url:'https://www.japantimes.co.jp/feed/',                          name:'Japan Times',     flag:'🇯🇵', cat:'world',       max:3 },
-  { id:'scmp',    url:'https://www.scmp.com/rss/91/feed',                            name:'SCMP',            flag:'🇭🇰', cat:'world',       max:3 },
-  { id:'cna',     url:'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml', name:'CNA Singapore', flag:'🇸🇬', cat:'world', max:3 },
+  { id:'jt',      url:'https://www.japantimes.co.jp/feed/',                          name:'Japan Times',     flag:'🇯🇵', cat:'ai',       max:3 },
+  { id:'scmp',    url:'https://www.scmp.com/rss/91/feed',                            name:'SCMP',            flag:'🇭🇰', cat:'ai',       max:3 },
+  { id:'cna',     url:'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml', name:'CNA Singapore', flag:'🇸🇬', cat:'ai', max:3 },
 
   // 🌍 Google News по темам
   { id:'gn-ai',   url:'https://news.google.com/rss/search?q=artificial+intelligence+technology&hl=en&gl=US&ceid=US:en',   name:'Google News', flag:'🌍', cat:'ai',         max:5 },
   { id:'gn-cy',   url:'https://news.google.com/rss/search?q=cybersecurity+hack+data+breach&hl=en&gl=US&ceid=US:en',      name:'Google News', flag:'🌍', cat:'cyber',       max:5 },
   { id:'gn-ft',   url:'https://news.google.com/rss/search?q=fintech+cryptocurrency+blockchain&hl=en&gl=US&ceid=US:en',   name:'Google News', flag:'🌍', cat:'software',     max:5 },
   { id:'gn-rg',   url:'https://news.google.com/rss/search?q=AI+regulation+technology+policy&hl=en&gl=US&ceid=US:en',    name:'Google News', flag:'🌍', cat:'regulation',   max:5 },
-  { id:'gn-by',   url:'https://news.google.com/rss/search?q=Belarus+IT+technology+digital&hl=en&gl=BY&ceid=BY:en',      name:'Google News', flag:'🇧🇾', cat:'by',          max:4 },
-  { id:'gn-as',   url:'https://news.google.com/rss/search?q=Asia+tech+startup+digital+economy&hl=en&gl=SG&ceid=SG:en', name:'Google News', flag:'🌏', cat:'world',        max:4 },
-  { id:'gn-de',   url:'https://news.google.com/rss/search?q=Technologie+Digitalisierung+KI+Deutschland&hl=de&gl=DE&ceid=DE:de', name:'Google News DE', flag:'🇩🇪', cat:'world', max:4 },
+  { id:'gn-by',   url:'https://news.google.com/rss/search?q=Belarus+IT+technology+digital&hl=en&gl=BY&ceid=BY:en',      name:'Google News', flag:'🇧🇾', cat:'ai',          max:4 },
+  { id:'gn-as',   url:'https://news.google.com/rss/search?q=Asia+tech+startup+digital+economy&hl=en&gl=SG&ceid=SG:en', name:'Google News', flag:'🌏', cat:'ai',        max:4 },
+  { id:'gn-de',   url:'https://news.google.com/rss/search?q=Technologie+Digitalisierung+KI+Deutschland&hl=de&gl=DE&ceid=DE:de', name:'Google News DE', flag:'🇩🇪', cat:'ai', max:4 },
 ];
 
 // Редакционные материалы HTDI (пусто — только живые RSS)
@@ -367,7 +364,7 @@ function fmtDate(d){
 
 function categorize(title, desc, defaultCat){
   const t = (title+' '+desc).toLowerCase();
-  for(const cat of ['by','ai','cyber','infra','software','regulation','education','construction']){
+  for(const cat of ['ai','cyber','infra','software','regulation','education','construction']){
     for(const kw of KW[cat]){
       const re = new RegExp(kw);
       if(re.test(t)) return cat;

@@ -57,18 +57,6 @@
   .stat-num{font-size:20px;font-weight:800;color:var(--text);letter-spacing:-.5px}
   .stat-label{font-size:11px;color:var(--text3)}
 
-  /* HERO CTA */
-  .hero-cta{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;align-items:center}
-  .tg-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:#2AABEE;color:#fff;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;transition:opacity .2s,transform .1s;white-space:nowrap;box-shadow:0 0 20px rgba(42,171,238,.3)}
-  .tg-btn:hover{opacity:.9;transform:translateY(-1px)}
-  .tg-btn svg{flex-shrink:0}
-  .email-form{display:flex;gap:8px;flex:1;min-width:260px;max-width:420px}
-  .email-input{flex:1;padding:10px 16px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);font-size:13px;color:var(--text);outline:none;transition:all .2s}
-  .email-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow);background:var(--surface)}
-  .email-input::placeholder{color:var(--text3)}
-  .email-btn{padding:10px 18px;background:linear-gradient(135deg,#6366f1,#a855f7);color:#fff;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity .2s,transform .1s;box-shadow:0 0 16px rgba(99,102,241,.25)}
-  .email-btn:hover{opacity:.9;transform:translateY(-1px)}
-
   /* FILTERS */
   .filters-bar{background:rgba(15,17,23,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:70px;z-index:90}
   .filters-inner{max-width:1280px;margin:0 auto;padding:10px 28px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none}
@@ -134,8 +122,11 @@
   .toast.show{transform:translateX(-50%) translateY(0)}
 
   /* FOOTER */
-  footer{background:var(--surface);border-top:1px solid var(--border);padding:24px;text-align:center;font-size:12px;color:var(--text3)}
+  footer{background:var(--surface);border-top:1px solid var(--border);padding:20px 24px;text-align:center;font-size:12px;color:var(--text3)}
   footer a{color:var(--accent2);text-decoration:none}
+  .social-row{display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .social-link{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);transition:all .2s;text-decoration:none}
+  .social-link:hover{border-color:var(--accent2);color:#fff;background:var(--surface);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
 
   /* MODAL */
   .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:500;opacity:0;pointer-events:none;transition:opacity .25s}
@@ -163,7 +154,6 @@
       <div class="logo-icon">HT<br>DI</div>
       <div>
         <div class="logo-text">HTDI.by</div>
-        <div class="logo-sub">Новостной агрегатор</div>
       </div>
     </a>
     <div class="search-wrap">
@@ -184,6 +174,7 @@
 
 <section class="hero">
   <div class="hero-inner">
+    <div class="hero-label"><span></span>Live</div>
     <h1>IT-новости Беларуси<br>и мировые тренды</h1>
     <p class="hero-desc">AI, кибербезопасность, финтех, регулирование и цифровая экономика в реальном времени.</p>
     <div class="hero-stats">
@@ -191,16 +182,6 @@
       <div class="stat"><span class="stat-num" id="stat-by">—</span><span class="stat-label">из Беларуси 🇧🇾</span></div>
       <div class="stat"><span class="stat-num" id="stat-ok">—</span><span class="stat-label">источников онлайн</span></div>
       <div class="stat"><span class="stat-num">8</span><span class="stat-label">категорий</span></div>
-    </div>
-    <div class="hero-cta">
-      <a class="tg-btn" href="https://t.me/beltime_news" target="_blank" rel="noopener">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.16 13.947l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.988.612z"/></svg>
-        Подписаться на Telegram
-      </a>
-      <form class="email-form" onsubmit="subscribeEmail(event)">
-        <input class="email-input" type="email" id="emailInput" placeholder="Ваш email для дайджеста…" required>
-        <button class="email-btn" type="submit">Подписаться</button>
-      </form>
     </div>
   </div>
 </section>
@@ -219,6 +200,32 @@
 </main>
 
 <footer>
+  <div class="social-row">
+    <!-- Telegram -->
+    <a class="social-link" href="#" target="_blank" rel="noopener" title="Telegram">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.19 13.975l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.958.584z"/></svg>
+    </a>
+    <!-- VKontakte -->
+    <a class="social-link" href="#" target="_blank" rel="noopener" title="ВКонтакте">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.5 16.5h-1.75c-.66 0-.86-.525-2.04-1.71-1.02-1-1.47-.875-1.47.15v1.56H10.5s-2.875.175-5.25-2.85C2.725 10.975 1.5 7.725 1.5 7.725s-.125-.35.225-.35h1.75c.525 0 .725.3.925.825.875 2.35 2.4 4.4 3.025 4.4.225 0 .35-.1.35-.675V9.15c-.075-1.225-.7-1.325-.7-1.325s-.225-.275.225-.275h2.775c.45 0 .6.225.6.7v3.475c0 .45.2.6.325.6.225 0 .45-.15.9-.6 1.375-1.525 2.35-3.875 2.35-3.875s.175-.375.7-.375h1.75c.525 0 .65.275.525.7-.875 2.425-2.975 4.65-2.975 4.65s-.175.325 0 .65c.125.225.6.675 1.025 1.075.75.7 1.35 1.3 1.5 1.725.175.425-.05.625-.475.625z"/></svg>
+    </a>
+    <!-- TikTok -->
+    <a class="social-link" href="#" target="_blank" rel="noopener" title="TikTok">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+    </a>
+    <!-- X / Twitter -->
+    <a class="social-link" href="#" target="_blank" rel="noopener" title="X (Twitter)">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.736-8.849L1.254 2.25H8.08l4.253 5.622 5.912-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <!-- Threads -->
+    <a class="social-link" href="#" target="_blank" rel="noopener" title="Threads">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.474 12.01v-.02c.02-3.579.87-6.43 2.521-8.473C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.472l-2.34.67c-1.152-4.065-3.875-6.108-8.006-6.132-2.65.017-4.88.917-6.223 2.544-1.287 1.558-1.943 3.923-1.956 7.028.013 3.106.67 5.47 1.956 7.028 1.344 1.627 3.573 2.527 6.223 2.544 2.426-.015 4.089-.617 5.236-1.861.995-1.073 1.498-2.578 1.522-4.571-.5.07-1.012.115-1.534.132-1.044.034-2.04-.054-2.975-.264-.03.372-.09.729-.18 1.063-.232.862-.663 1.549-1.279 2.04-.639.51-1.437.765-2.375.758-1.128-.007-2.05-.355-2.741-1.035-.666-.656-1.008-1.546-1.003-2.565.006-1.074.394-1.979 1.123-2.614.757-.658 1.854-1.013 3.164-1.025.74-.006 1.44.063 2.09.205-.03-.554-.203-.983-.51-1.275-.332-.315-.851-.477-1.541-.484h-.009c-.546 0-1.052.137-1.378.376-.298.22-.457.525-.457.887v.006l-2.319-.32v-.002c-.006-.074-.009-.147-.009-.22 0-1.08.504-2.023 1.42-2.666.867-.609 2.019-.944 3.269-.944h.022c1.39.014 2.542.407 3.33 1.135.791.73 1.187 1.754 1.187 3.044 0 .128-.003.255-.009.38.724-.072 1.413-.225 2.058-.455l.003.025c.121.973.17 2.016.148 3.082-.046 2.35-.677 4.14-1.875 5.317-1.27 1.246-3.166 1.867-5.793 1.879z"/></svg>
+    </a>
+    <!-- Instagram -->
+    <a class="social-link" href="#" target="_blank" rel="noopener" title="Instagram">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+  </div>
   © 2026 <a href="https://htdi.by" target="_blank">HTDI.by</a>
 </footer>
 <div class="toast" id="toast"></div>
@@ -252,23 +259,28 @@
 const PROXY = '/.netlify/functions/rss?url=';
 
 const CATS = {
-  all:        { label:'🗞 Все',               color:'#6366f1', bg:'rgba(99,102,241,.12)',  bdr:'rgba(99,102,241,.2)' },
-  by:         { label:'🇧🇾 Беларусь',         color:'#34d399', bg:'rgba(52,211,153,.12)',  bdr:'rgba(52,211,153,.2)' },
-  ai:         { label:'🤖 AI / ML',           color:'#60a5fa', bg:'rgba(96,165,250,.12)',  bdr:'rgba(96,165,250,.2)' },
-  cyber:      { label:'🔐 Кибербезопасность', color:'#f87171', bg:'rgba(248,113,113,.12)', bdr:'rgba(248,113,113,.2)' },
-  fintech:    { label:'💰 Финтех',            color:'#2dd4bf', bg:'rgba(45,212,191,.12)',  bdr:'rgba(45,212,191,.2)' },
-  regulation: { label:'⚖️ Регулирование',     color:'#fbbf24', bg:'rgba(251,191,36,.12)',  bdr:'rgba(251,191,36,.2)' },
-  world:      { label:'🌍 Мировые IT',        color:'#a78bfa', bg:'rgba(167,139,250,.12)', bdr:'rgba(167,139,250,.2)' },
-  ntdi:       { label:'📋 Обзоры HTDI',      color:'#fb923c', bg:'rgba(251,146,60,.12)',  bdr:'rgba(251,146,60,.2)' },
+  all:          { label:'🗞 Все',                      color:'#6366f1', bg:'rgba(99,102,241,.12)',  bdr:'rgba(99,102,241,.2)' },
+  by:           { label:'🇧🇾 Беларусь',               color:'#34d399', bg:'rgba(52,211,153,.12)',  bdr:'rgba(52,211,153,.2)' },
+  ai:           { label:'🤖 AI / ИИ',                 color:'#60a5fa', bg:'rgba(96,165,250,.12)',  bdr:'rgba(96,165,250,.2)' },
+  cyber:        { label:'🔐 Кибербезопасность',        color:'#f87171', bg:'rgba(248,113,113,.12)', bdr:'rgba(248,113,113,.2)' },
+  infra:        { label:'🖥️ Инфраструктура (ЦОД)',    color:'#2dd4bf', bg:'rgba(45,212,191,.12)',  bdr:'rgba(45,212,191,.2)' },
+  software:     { label:'💻 ПО и платформы',           color:'#a78bfa', bg:'rgba(167,139,250,.12)', bdr:'rgba(167,139,250,.2)' },
+  regulation:   { label:'⚖️ Регулирование',            color:'#fbbf24', bg:'rgba(251,191,36,.12)',  bdr:'rgba(251,191,36,.2)' },
+  education:    { label:'🎓 Образование',              color:'#fb923c', bg:'rgba(251,146,60,.12)',  bdr:'rgba(251,146,60,.2)' },
+  construction: { label:'🏗️ Цифровизация стройки',    color:'#818cf8', bg:'rgba(129,140,248,.12)', bdr:'rgba(129,140,248,.2)' },
+  world:        { label:'🌍 Мировые IT',               color:'#e879f9', bg:'rgba(232,121,249,.12)', bdr:'rgba(232,121,249,.2)' },
 };
 
 // Ключевые слова для авто-категоризации
 const KW = {
-  by:         ['беларус','белорус','минск','пвт','htp_','htdi','нтди','belarus','minsk','byfly','резидент пвт'],
-  ai:         ['artificial intelligence',' ai ','neural','llm','gpt','openai','claude','gemini','deepmind','generative','chatgpt','deep learning','language model','искусственный интеллект','нейронн','large language'],
-  cyber:      ['cybersecurity','cyber security','cyberattack','hacker','data breach','vulnerability','malware','ransomware','phishing','zero-day','exploit','кибербезопасност','взлом','уязвимост'],
-  fintech:    ['fintech','cryptocurrency','crypto ','blockchain','bitcoin','ethereum',' token ','defi ','payment system','digital bank','криптовалют','блокчейн','токен','финтех','цифров.{0,10}финанс'],
-  regulation: ['regulation','legislation','ai act','gdpr','compliance','tech policy','digital policy','правовой','закон','регулирован','нормативн','директив'],
+  by:           ['беларус','белорус','минск','пвт','htp_','htdi','нтди','belarus','minsk','byfly','резидент пвт'],
+  ai:           ['artificial intelligence',' ai ','neural','llm','gpt','openai','claude','gemini','deepmind','generative','chatgpt','deep learning','language model','искусственный интеллект','нейронн','large language','machine learning'],
+  cyber:        ['cybersecurity','cyber security','cyberattack','hacker','data breach','vulnerability','malware','ransomware','phishing','zero-day','exploit','кибербезопасност','взлом','уязвимост','ddos','firewall'],
+  infra:        ['data center','datacenter','цод','цент.{0,5}обработ','server','облак','cloud infrastructure','hosting','colocation','майнинг','высокопроизводительн','hpc','сеть передачи данных'],
+  software:     ['software','saas','paas','iaas','platform','open.source','fintech','cryptocurrency','crypto','blockchain','bitcoin','ethereum','digital bank','цифров.{0,10}финанс','криптовалют','блокчейн','финтех','приложен','разработ'],
+  regulation:   ['regulation','legislation','ai act','gdpr','compliance','tech policy','digital policy','еаэс','снг','правовой','закон','регулирован','нормативн','директив','госорган','минцифр'],
+  education:    ['education','university','студент','образован','наука','research','stem','кадр','it.специалист','подготовк','обучен','школ','вуз','академи'],
+  construction: ['строительств','цифровизац.{0,10}строй','bim','умный дом','smart building','цифровой двойник','недвижимост','проектирован','архитект'],
 };
 
 // ✅ Источники (май 2026) — 32 источника из 15 стран
@@ -307,7 +319,7 @@ const SOURCES = [
   { id:'f24',     url:'https://www.france24.com/en/rss',                             name:'France 24',       flag:'🇫🇷', cat:'world',       max:3 },
 
   // 💰 Финтех / Крипто
-  { id:'coindesk',url:'https://www.coindesk.com/arc/outboundfeeds/rss/',             name:'CoinDesk',        flag:'💰', cat:'fintech',      max:4 },
+  { id:'coindesk',url:'https://www.coindesk.com/arc/outboundfeeds/rss/',             name:'CoinDesk',        flag:'💰', cat:'software',      max:4 },
 
   // 🌏 Азия
   { id:'jt',      url:'https://www.japantimes.co.jp/feed/',                          name:'Japan Times',     flag:'🇯🇵', cat:'world',       max:3 },
@@ -317,24 +329,15 @@ const SOURCES = [
   // 🌍 Google News по темам
   { id:'gn-ai',   url:'https://news.google.com/rss/search?q=artificial+intelligence+technology&hl=en&gl=US&ceid=US:en',   name:'Google News', flag:'🌍', cat:'ai',         max:5 },
   { id:'gn-cy',   url:'https://news.google.com/rss/search?q=cybersecurity+hack+data+breach&hl=en&gl=US&ceid=US:en',      name:'Google News', flag:'🌍', cat:'cyber',       max:5 },
-  { id:'gn-ft',   url:'https://news.google.com/rss/search?q=fintech+cryptocurrency+blockchain&hl=en&gl=US&ceid=US:en',   name:'Google News', flag:'🌍', cat:'fintech',     max:5 },
+  { id:'gn-ft',   url:'https://news.google.com/rss/search?q=fintech+cryptocurrency+blockchain&hl=en&gl=US&ceid=US:en',   name:'Google News', flag:'🌍', cat:'software',     max:5 },
   { id:'gn-rg',   url:'https://news.google.com/rss/search?q=AI+regulation+technology+policy&hl=en&gl=US&ceid=US:en',    name:'Google News', flag:'🌍', cat:'regulation',   max:5 },
   { id:'gn-by',   url:'https://news.google.com/rss/search?q=Belarus+IT+technology+digital&hl=en&gl=BY&ceid=BY:en',      name:'Google News', flag:'🇧🇾', cat:'by',          max:4 },
   { id:'gn-as',   url:'https://news.google.com/rss/search?q=Asia+tech+startup+digital+economy&hl=en&gl=SG&ceid=SG:en', name:'Google News', flag:'🌏', cat:'world',        max:4 },
   { id:'gn-de',   url:'https://news.google.com/rss/search?q=Technologie+Digitalisierung+KI+Deutschland&hl=de&gl=DE&ceid=DE:de', name:'Google News DE', flag:'🇩🇪', cat:'world', max:4 },
 ];
 
-// Редакционные материалы HTDI
-const EDITORIAL = [
-  { id:'ed1', cat:'ntdi', flag:'📋', source:'Утренний обзор', date:new Date(),
-    title:'Утренний IT-обзор HTDI | 18 мая 2026',
-    desc:'AI Act вступает в силу в ЕС, Япония инвестирует $7 млрд в AI-инфраструктуру, резиденты ПВТ на выставке «Здравоохранение-2026». Подборка ключевых событий с комментариями ассоциации.',
-    ntdi:'Неделя ознаменована усилением AI-регулирования в ЕС и ростом азиатских инвестиций в цифровую инфраструктуру.', url:'#' },
-  { id:'ed2', cat:'ntdi', flag:'📋', source:'Аналитика', date:new Date(Date.now()-86400000),
-    title:'Белорусский IT-экспорт: итоги Q1 2026 и прогнозы',
-    desc:'HTDI публикует аналитический дайджест по ключевым показателям IT-экспорта Беларуси. Рост в сегментах AI, кибербезопасности и финтех-разработки.',
-    ntdi:'Ассоциация фиксирует устойчивый рост по всем ключевым метрикам.', url:'#' },
-];
+// Редакционные материалы HTDI (пусто — только живые RSS)
+const EDITORIAL = [];
 
 // ═══════════════════════════════════════════════
 //  СОСТОЯНИЕ
@@ -364,7 +367,7 @@ function fmtDate(d){
 
 function categorize(title, desc, defaultCat){
   const t = (title+' '+desc).toLowerCase();
-  for(const cat of ['by','ai','cyber','fintech','regulation']){
+  for(const cat of ['by','ai','cyber','infra','software','regulation','education','construction']){
     for(const kw of KW[cat]){
       const re = new RegExp(kw);
       if(re.test(t)) return cat;
@@ -686,26 +689,6 @@ function toggleLang(){
     langRu = false;
     setTimeout(()=>{ location.reload(); }, 200);
   }
-}
-
-// ═══════════════════════════════════════════════
-//  EMAIL ПОДПИСКА
-// ═══════════════════════════════════════════════
-function subscribeEmail(e){
-  e.preventDefault();
-  const input = document.getElementById('emailInput');
-  const email = input.value.trim();
-  if(!email) return;
-  // Сохраняем локально (в будущем — интеграция с рассылкой)
-  const subs = JSON.parse(localStorage.getItem('htdi_subs')||'[]');
-  if(!subs.includes(email)){
-    subs.push(email);
-    localStorage.setItem('htdi_subs', JSON.stringify(subs));
-    showToast('✅ Подписка оформлена! Ждите дайджест на ' + email);
-  } else {
-    showToast('📧 Этот email уже подписан на дайджест');
-  }
-  input.value = '';
 }
 
 // СТАРТ

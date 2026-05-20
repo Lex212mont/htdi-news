@@ -58,7 +58,15 @@
   .stat-label{font-size:11px;color:var(--text3)}
 
   /* FILTERS */
-  .filters-bar{background:rgba(15,17,23,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:70px;z-index:90}
+  .regions-bar{background:rgba(15,17,23,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:70px;z-index:91}
+  .regions-inner{max-width:1280px;margin:0 auto;padding:7px 28px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none}
+  .regions-inner::-webkit-scrollbar{display:none}
+  .region-btn{padding:5px 14px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:700;color:var(--text2);cursor:pointer;white-space:nowrap;border-radius:30px;transition:all .2s;display:flex;align-items:center;gap:5px;flex-shrink:0}
+  .region-btn:hover{color:var(--text)}
+  .region-btn.active{border-color:transparent;color:#fff}
+  .region-count{font-size:10px;border-radius:10px;padding:1px 5px;font-weight:700;background:rgba(255,255,255,.15)}
+  .region-btn:not(.active) .region-count{background:var(--surface2);color:var(--text3)}
+  .filters-bar{background:rgba(15,17,23,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:113px;z-index:90}
   .filters-inner{max-width:1280px;margin:0 auto;padding:10px 28px;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none}
   .filters-inner::-webkit-scrollbar{display:none}
   .filter-btn{padding:7px 13px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;white-space:nowrap;border-radius:30px;transition:all .2s;display:flex;align-items:center;gap:6px;flex-shrink:0}
@@ -186,13 +194,16 @@
   </div>
 </section>
 
+<div class="regions-bar">
+  <div class="regions-inner" id="regions"></div>
+</div>
 <div class="filters-bar">
   <div class="filters-inner" id="filters"></div>
 </div>
 
 <main>
   <div class="section-header">
-    <span class="section-title" id="sectionTitle">Все новости</span>
+    <span class="section-title" id="sectionTitle">Топ дня</span>
     <span class="last-updated" id="lastUpdated"><span class="live-dot"></span>Загрузка…</span>
   </div>
 
@@ -259,7 +270,7 @@
 const PROXY = '/api/rss?url=';
 
 const CATS = {
-  all:          { label:'🗞 Все',        color:'#6366f1', bg:'rgba(99,102,241,.12)',  bdr:'rgba(99,102,241,.2)' },
+  all:          { label:'🏆 Топ дня',    color:'#6366f1', bg:'rgba(99,102,241,.12)',  bdr:'rgba(99,102,241,.2)' },
   ai:           { label:'🤖 ИИ',         color:'#60a5fa', bg:'rgba(96,165,250,.12)',  bdr:'rgba(96,165,250,.2)' },
   cyber:        { label:'🔐 Кибербез',   color:'#f87171', bg:'rgba(248,113,113,.12)', bdr:'rgba(248,113,113,.2)' },
   infra:        { label:'🖥️ ЦОД',        color:'#2dd4bf', bg:'rgba(45,212,191,.12)',  bdr:'rgba(45,212,191,.2)' },
@@ -267,6 +278,13 @@ const CATS = {
   regulation:   { label:'⚖️ Право и регулирование', color:'#fbbf24', bg:'rgba(251,191,36,.12)',  bdr:'rgba(251,191,36,.2)' },
   education:    { label:'🎓 Образование и наука',    color:'#fb923c', bg:'rgba(251,146,60,.12)',  bdr:'rgba(251,146,60,.2)' },
   construction: { label:'🏗️ Цифровизация отраслей', color:'#818cf8', bg:'rgba(129,140,248,.12)', bdr:'rgba(129,140,248,.2)' },
+};
+
+const REGIONS = {
+  all:  { label:'🌐 Все источники',        color:'#6366f1' },
+  by:   { label:'🇧🇾 Беларусь',            color:'#34d399' },
+  ru:   { label:'🇷🇺 Россия',             color:'#f87171' },
+  spec: { label:'🔬 Специализированные',  color:'#a78bfa' },
 };
 
 // Ключевые слова для авто-категоризации
@@ -282,9 +300,25 @@ const KW = {
 
 // ✅ Источники (май 2026) — 32 источника из 15 стран
 const SOURCES = [
-  // 🇧🇾 Беларусь — Telegram каналы через RSSHub rssforever.com
-  { id:'htp',     url:'https://rsshub.rssforever.com/telegram/channel/htp_belarus',   name:'@htp_belarus',    flag:'🇧🇾', cat:'ai',         max:5 },
-  { id:'apkit',   url:'https://rsshub.rssforever.com/telegram/channel/ApkitLive',     name:'@ApkitLive',      flag:'🇧🇾', cat:'ai',         max:5 },
+  // ═══ 🇧🇾 БЕЛАРУСЬ ═══
+  { id:'belta',    url:'https://www.belta.by/rss/',                                                                                      name:'БЕЛТА',           flag:'🇧🇾', region:'by', cat:'ai',         max:6 },
+  { id:'htp',      url:'https://rsshub.rssforever.com/telegram/channel/htp_belarus',                                                     name:'ПВТ Беларусь',    flag:'🇧🇾', region:'by', cat:'ai',         max:6 },
+  { id:'mincifry', url:'https://news.google.com/rss/search?q=Минцифры+Беларусь+цифровизация+технологии&hl=ru&gl=BY&ceid=BY:ru',         name:'Минцифры BY',     flag:'🇧🇾', region:'by', cat:'regulation', max:5 },
+
+  // ═══ 🇷🇺 РОССИЯ ═══
+  { id:'tass',     url:'https://tass.ru/rss/v2.xml',                                                                                     name:'ТАСС',            flag:'🇷🇺', region:'ru', cat:'ai',         max:6 },
+  { id:'ria',      url:'https://ria.ru/export/rss2/technology/index.xml',                                                                name:'РИА Новости',     flag:'🇷🇺', region:'ru', cat:'ai',         max:6 },
+  { id:'rbc',      url:'https://rssexport.rbc.ru/rbcnews/news/30/full.rss',                                                              name:'РБК Технологии',  flag:'🇷🇺', region:'ru', cat:'ai',         max:6 },
+  { id:'kom',      url:'https://www.kommersant.ru/RSS/news.xml',                                                                         name:'Коммерсантъ',     flag:'🇷🇺', region:'ru', cat:'ai',         max:5 },
+  { id:'cnews',    url:'https://www.cnews.ru/inc/rss/news.xml',                                                                          name:'CNews',           flag:'🇷🇺', region:'ru', cat:'ai',         max:6 },
+
+  // ═══ 🔬 СПЕЦИАЛИЗИРОВАННЫЕ ═══
+  { id:'habr',     url:'https://habr.com/ru/rss/hub/artificial_intelligence/all/',                                                       name:'Habr ИИ',         flag:'🤖', region:'spec', cat:'ai',         max:5 },
+  { id:'reuters',  url:'https://feeds.reuters.com/reuters/technologyNews',                                                               name:'Reuters Tech',    flag:'🌍', region:'spec', cat:'ai',         max:5 },
+  { id:'dcunion',  url:'https://dcunion.ru/feed',                                                                                        name:'DC Union',        flag:'🖥️', region:'spec', cat:'infra',       max:5 },
+  { id:'gn-dc',    url:'https://news.google.com/rss/search?q=дата-центр+ЦОД+серверная+инфраструктура&hl=ru&gl=RU&ceid=RU:ru',          name:'ЦОД Новости',     flag:'🖥️', region:'spec', cat:'infra',       max:5 },
+  { id:'antimal',  url:'https://www.anti-malware.ru/rss',                                                                                name:'Anti-Malware.ru', flag:'🔐', region:'spec', cat:'cyber',       max:5 },
+  { id:'infowatch',url:'https://news.google.com/rss/search?q=InfoWatch+кибербезопасность+информационная+безопасность&hl=ru&gl=RU&ceid=RU:ru', name:'InfoWatch', flag:'🔐', region:'spec', cat:'cyber',  max:4 },
 
   // 🇺🇸 США — IT-медиа
   { id:'wired',   url:'https://www.wired.com/feed/rss',                               name:'Wired',           flag:'🇺🇸', cat:'ai',       max:5 },
@@ -394,11 +428,10 @@ const SOURCES = [
   { id:'gn-russoft',url:'https://news.google.com/rss/search?q=Russoft+Russia+software+technology&hl=en&gl=RU&ceid=RU:en',           name:'Russoft',          flag:'🇷🇺', cat:'software',   max:2 },
 
   // ═══ Российские IT-ассоциации ═══
-  { id:'apkit',    url:'https://apkit.ru/rss',                                                                                         name:'АПКИТ',            flag:'🇷🇺', cat:'regulation', max:4 },
-  { id:'gn-russoft2',url:'https://news.google.com/rss/search?q=russoft.org+РУССОФТ+ассоциация+разработчиков&hl=ru&gl=RU&ceid=RU:ru', name:'РУССОФТ',          flag:'🇷🇺', cat:'software',   max:3 },
-  { id:'gn-arpp',  url:'https://news.google.com/rss/search?q=АРПП+отечественное+программное+обеспечение&hl=ru&gl=RU&ceid=RU:ru',     name:'АРПП «Отечественный софт»', flag:'🇷🇺', cat:'software', max:3 },
-  { id:'gn-arpe',  url:'https://news.google.com/rss/search?q=АРПЭ+электроника+радиопромышленность&hl=ru&gl=RU&ceid=RU:ru',           name:'АРПЭ',             flag:'🇷🇺', cat:'infra',      max:3 },
-  { id:'dcunion',  url:'https://dcunion.ru/feed',                                                                                      name:'DC Union',         flag:'🇷🇺', cat:'infra',      max:4 },
+  { id:'apkit',    url:'https://apkit.ru/rss',                                                                                         name:'АПКИТ',            flag:'🇷🇺', region:'ru', cat:'regulation', max:4 },
+  { id:'gn-russoft2',url:'https://news.google.com/rss/search?q=russoft.org+РУССОФТ+ассоциация+разработчиков&hl=ru&gl=RU&ceid=RU:ru', name:'РУССОФТ',          flag:'🇷🇺', region:'ru', cat:'software',   max:3 },
+  { id:'gn-arpp',  url:'https://news.google.com/rss/search?q=АРПП+отечественное+программное+обеспечение&hl=ru&gl=RU&ceid=RU:ru',     name:'АРПП «Отечественный софт»', flag:'🇷🇺', region:'ru', cat:'software', max:3 },
+  { id:'gn-arpe',  url:'https://news.google.com/rss/search?q=АРПЭ+электроника+радиопромышленность&hl=ru&gl=RU&ceid=RU:ru',           name:'АРПЭ',             flag:'🇷🇺', region:'ru', cat:'infra',      max:3 },
 ];
 
 // Редакционные материалы HTDI (пусто — только живые RSS)
@@ -409,6 +442,7 @@ const EDITORIAL = [];
 // ═══════════════════════════════════════════════
 let NEWS = [...EDITORIAL];
 let currentFilter = 'all';
+let currentRegion = 'all';
 let currentSearch = '';
 let loading = false;
 let srcStatus = {}; // id → 'ok'|'err'
@@ -532,9 +566,13 @@ async function loadAllFeeds(){
     let score = 0;
     const t = (item.title + ' ' + item.desc + ' ' + (item.source||'')).toLowerCase();
 
-    // География
-    if (/беларус|белорус|минск|пвт|htp|htdi|нтди|belarus|minsk|byfly/.test(t)) score += 40;
-    if (/россия|российск|москва|россия|russoft|апкит|арпп|арпэ|russia|russian|kremlin|dcunion/.test(t)) score += 30;
+    // Регион — максимальный приоритет
+    if (item.region === 'by') score += 60;
+    else if (item.region === 'ru') score += 50;
+    else if (item.region === 'spec') score += 35;
+    // Ключевые слова (для источников без region)
+    if (/беларус|белорус|минск|пвт|htp|htdi|нтди|belarus|minsk|byfly/.test(t)) score += 30;
+    if (/россия|российск|москва|russoft|апкит|арпп|арпэ|russia|russian/.test(t)) score += 20;
 
     // Темы
     if (/\bai\b|искусственный интеллект|нейронн|llm|gpt|openai|claude|gemini|machine learning|deep learning/.test(t)) score += 25;
@@ -585,13 +623,42 @@ function buildFilters(){
     </button>`).join('');
 }
 
+function buildRegions(){
+  document.getElementById('regions').innerHTML = Object.entries(REGIONS).map(([k,r])=>`
+    <button class="region-btn${k==='all'?' active':''}" data-region="${k}" onclick="setRegion('${k}')"
+      style="${k==='all'?'background:'+r.color+';border-color:transparent;color:#fff':''}">
+      ${r.label} <span class="region-count" id="rcnt-${k}">—</span>
+    </button>`).join('');
+}
+
+function renderRegionCounts(){
+  Object.keys(REGIONS).forEach(k=>{
+    const el = document.getElementById('rcnt-'+k);
+    if(!el) return;
+    el.textContent = k==='all' ? NEWS.length : NEWS.filter(n=>n.region===k).length;
+  });
+}
+
+function setRegion(r){
+  currentRegion = r;
+  document.querySelectorAll('.region-btn').forEach(b=>{
+    const active = b.dataset.region===r;
+    b.classList.toggle('active',active);
+    const rc = REGIONS[b.dataset.region];
+    if(active){ b.style.background=rc.color; b.style.borderColor='transparent'; b.style.color='#fff'; }
+    else { b.style.background=''; b.style.borderColor=''; b.style.color=''; }
+  });
+  renderGrid();
+}
+
 function renderCounts(){
   Object.keys(CATS).forEach(k=>{
     const el = document.getElementById('cnt-'+k);
-    if(el) el.textContent = k==='all' ? NEWS.length : NEWS.filter(n=>n.cat===k).length;
+    if(el) el.textContent = k==='all' ? Math.min(NEWS.length,15) : NEWS.filter(n=>n.cat===k).length;
   });
+  renderRegionCounts();
   document.getElementById('stat-total').textContent = NEWS.length;
-  document.getElementById('stat-by').textContent = NEWS.filter(n=>n.cat==='by').length;
+  document.getElementById('stat-by').textContent = NEWS.filter(n=>n.region==='by').length;
 }
 
 function renderSourceBadges(){
@@ -650,12 +717,15 @@ function renderGrid(){
 }
 
 function getFiltered(){
-  return NEWS.filter(n=>{
-    const mc = currentFilter==='all'||n.cat===currentFilter;
-    const q = currentSearch.toLowerCase();
+  const q = currentSearch.toLowerCase();
+  const filtered = NEWS.filter(n=>{
+    const mc = currentFilter==='all' || n.cat===currentFilter;
+    const mr = currentRegion==='all' || n.region===currentRegion;
     const ms = !q||[n.title,n.desc,n.source].some(s=>s.toLowerCase().includes(q));
-    return mc&&ms;
+    return mc&&mr&&ms;
   });
+  if(currentFilter==='all' && !q) return filtered.slice(0,15);
+  return filtered;
 }
 
 function setFilter(cat){
@@ -782,6 +852,7 @@ function toggleLang(){
 }
 
 // СТАРТ
+buildRegions();
 buildFilters();
 renderCounts();
 renderGrid();

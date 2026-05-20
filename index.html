@@ -527,7 +527,32 @@ async function loadAllFeeds(){
     else { srcStatus[s.id]='err'; console.warn(s.name, r.reason?.message); }
   });
 
-  live.sort((a,b)=>b.date-a.date);
+  // ── «Топ дня» — балльная сортировка ──
+  function scoreNews(item) {
+    let score = 0;
+    const t = (item.title + ' ' + item.desc + ' ' + (item.source||'')).toLowerCase();
+
+    // География
+    if (/беларус|белорус|минск|пвт|htp|htdi|нтди|belarus|minsk|byfly/.test(t)) score += 40;
+    if (/россия|российск|москва|россия|russoft|апкит|арпп|арпэ|russia|russian|kremlin|dcunion/.test(t)) score += 30;
+
+    // Темы
+    if (/\bai\b|искусственный интеллект|нейронн|llm|gpt|openai|claude|gemini|machine learning|deep learning/.test(t)) score += 25;
+    if (/цод|data.?center|датацентр|инфраструктур|colocation|серверн|облак|cloud/.test(t)) score += 20;
+    if (/кибербезопасност|cybersecur|взлом|hacker|ddos|ransomware|malware|уязвимост|breach/.test(t)) score += 20;
+    if (/пвт|минцифр|цифровизац|регулирован|законодательств|директив|compliance|policy|regulation/.test(t)) score += 15;
+
+    // Свежесть — максимум +10 за последние 24ч, убывает за 7 дней
+    const ageHours = (Date.now() - item.date) / 3600000;
+    if (ageHours < 24)       score += 10;
+    else if (ageHours < 48)  score += 7;
+    else if (ageHours < 72)  score += 4;
+    else if (ageHours < 168) score += 1;
+
+    return score;
+  }
+
+  live.sort((a, b) => scoreNews(b) - scoreNews(a) || b.date - a.date);
   NEWS = [...EDITORIAL, ...live];
 
   setProgress(100);

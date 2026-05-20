@@ -31,6 +31,28 @@ RU_RE = re.compile(r'россия|российск|москва|russoft|апки
 AI_RE = re.compile(r'\bai\b|искусственн|нейросет|llm|gpt|машинн|ml\b', re.I)
 CY_RE = re.compile(r'кибер|хакер|уязвим|вирус|утечк|взлом|security|cyber', re.I)
 
+# IT relevance — must match at least one keyword to pass filter
+IT_RE = re.compile(
+    r'\bai\b|искусственн|нейросет|llm|gpt|машинн обучени|deep.?learn'
+    r'|цифров|диджитал|digital|software|программ|разработ'
+    r'|кибер|хакер|уязвим|вирус|утечк|взлом|security|malware|ransomware'
+    r'|облак|cloud|дата.?центр|data.?cent|сервер|server'
+    r'|стартап|startup|tech|технолог|ит.отрасл|it.индустр'
+    r'|интернет|internet|сеть|network|5g|6g|wifi|broadband'
+    r'|приложени|app\b|платформ|platform|сервис|saas|paas'
+    r'|блокчейн|blockchain|крипто|crypto|nft|web3'
+    r'|робот|автоматиз|automat|беспилот|drone'
+    r'|смартфон|smartphone|гаджет|gadget|электроник'
+    r'|пвт|park.?ht|минцифр|цифровая.?экономик|e-gov'
+    r'|microsoft|google|apple|amazon|meta\b|openai|nvidia|intel|amd'
+    r'|huawei|samsung|xiaomi|alibaba|tencent|yandex|сбер|vk\b',
+    re.I
+)
+
+def is_it(item):
+    t = item.get("title","") + " " + item.get("summary","")
+    return bool(IT_RE.search(t))
+
 def score(item, region):
     s = REGION_SCORE.get(region, 0)
     t = (item.get("title","") + " " + item.get("summary",""))
@@ -64,6 +86,8 @@ def fetch_all():
                 })
         except Exception as ex:
             print(f"SKIP {src['name']}: {ex}")
+    # Keep only IT-relevant news
+    items = [it for it in items if is_it(it)]
     for it in items:
         it["score"] = score(it, it["region"])
     items.sort(key=lambda x: -x["score"])

@@ -1,0 +1,25 @@
+name: Daily НТДИ News to Telegram
+
+on:
+  schedule:
+    - cron: '30 5 * * *'  # 08:30 MSK (UTC+3)
+  workflow_dispatch:       # manual trigger
+
+jobs:
+  post-news:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install feedparser requests
+
+      - name: Fetch and post news
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: python .github/scripts/post_news.py

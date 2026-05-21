@@ -721,6 +721,10 @@ function renderRegionCounts(){
 
 function setRegion(r){
   currentRegion = r;
+  // Экспертный раздел — только экспертные материалы, лента скрыта
+  const isExpert = r === 'all';
+  toggleExpertSection(isExpert);
+  document.getElementById('grid').style.display = isExpert ? 'none' : '';
   document.querySelectorAll('.region-btn').forEach(b=>{
     const active = b.dataset.region===r;
     b.classList.toggle('active',active);
@@ -728,7 +732,6 @@ function setRegion(r){
     if(active){ b.style.background=rc.color; b.style.borderColor='transparent'; b.style.color='#fff'; }
     else { b.style.background=''; b.style.borderColor=''; b.style.color=''; }
   });
-  toggleExpertSection(r === 'all');
   renderGrid();
 }
 
@@ -1060,6 +1063,7 @@ renderGrid();
 loadAllFeeds();
 loadExpertNews();
 toggleExpertSection(true); // показываем при старте (регион = all)
+document.getElementById('grid').style.display = 'none'; // лента скрыта при старте
 </script>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>
 </body>

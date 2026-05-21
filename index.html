@@ -239,10 +239,9 @@
 <!-- EXPERT NEWS SECTION -->
 <div class="expert-section" id="expertSection">
   <div class="expert-header">
-    <div class="expert-title">
+    <div class="expert-title" id="expertTitleTrigger" style="cursor:default">
       🔬 Экспертные материалы <span>НТДИ</span>
     </div>
-    <button class="expert-add-btn" onclick="openAdminModal()">＋ Добавить</button>
   </div>
   <div class="expert-grid" id="expertGrid"></div>
   <hr class="expert-divider">
@@ -973,6 +972,19 @@ function toggleExpertSection(show){
 // ═══════════════════════════════════════════════
 //  АДМИН ПАНЕЛЬ
 // ═══════════════════════════════════════════════
+// Скрытый триггер — тройной клик по заголовку
+(function(){
+  let clicks=0,timer;
+  document.addEventListener('click',function(e){
+    if(e.target.closest('#expertTitleTrigger')){
+      clicks++;
+      clearTimeout(timer);
+      timer=setTimeout(()=>{clicks=0;},600);
+      if(clicks>=3){clicks=0;openAdminModal();}
+    }
+  });
+})();
+
 function openAdminModal(){
   adminUnlocked = false;
   document.getElementById('adminPasswordField').style.display = '';

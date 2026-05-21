@@ -364,7 +364,6 @@ const REGIONS = {
   all:  { label:'🌐 Экспертно-аналитическое сообщество', color:'#6366f1' },
   by:   { label:'🇧🇾 Беларусь',            color:'#34d399' },
   ru:   { label:'🇷🇺 Россия',             color:'#f87171' },
-  spec: { label:'🔬 Специализированные',  color:'#a78bfa' },
 };
 
 // Ключевые слова для авто-категоризации
@@ -469,12 +468,12 @@ const SOURCES = [
   { id:'cnews',    url:'https://www.cnews.ru/inc/rss/news.xml',                                                                          name:'CNews',           flag:'🇷🇺', region:'ru', cat:'ai',         max:6 },
 
   // ═══ 🔬 СПЕЦИАЛИЗИРОВАННЫЕ ═══
-  { id:'habr',     url:'https://habr.com/ru/rss/hub/artificial_intelligence/all/',                                                       name:'Habr ИИ',         flag:'🤖', region:'spec', cat:'ai',         max:5 },
-  { id:'reuters',  url:'https://feeds.reuters.com/reuters/technologyNews',                                                               name:'Reuters Tech',    flag:'🌍', region:'spec', cat:'ai',         max:5 },
-  { id:'dcunion',  url:'https://dcunion.ru/feed',                                                                                        name:'DC Union',        flag:'🖥️', region:'spec', cat:'infra',       max:5 },
-  { id:'gn-dc',    url:'https://news.google.com/rss/search?q=дата-центр+ЦОД+серверная+инфраструктура&hl=ru&gl=RU&ceid=RU:ru',          name:'ЦОД Новости',     flag:'🖥️', region:'spec', cat:'infra',       max:5 },
-  { id:'antimal',  url:'https://www.anti-malware.ru/rss',                                                                                name:'Anti-Malware.ru', flag:'🔐', region:'spec', cat:'cyber',       max:5 },
-  { id:'infowatch',url:'https://news.google.com/rss/search?q=InfoWatch+кибербезопасность+информационная+безопасность&hl=ru&gl=RU&ceid=RU:ru', name:'InfoWatch', flag:'🔐', region:'spec', cat:'cyber',  max:4 },
+  { id:'habr',     url:'https://habr.com/ru/rss/hub/artificial_intelligence/all/',                                                       name:'Habr ИИ',         flag:'🤖', cat:'ai',         max:5 },
+  { id:'reuters',  url:'https://feeds.reuters.com/reuters/technologyNews',                                                               name:'Reuters Tech',    flag:'🌍', cat:'ai',         max:5 },
+  { id:'dcunion',  url:'https://dcunion.ru/feed',                                                                                        name:'DC Union',        flag:'🖥️', cat:'infra',       max:5 },
+  { id:'gn-dc',    url:'https://news.google.com/rss/search?q=дата-центр+ЦОД+серверная+инфраструктура&hl=ru&gl=RU&ceid=RU:ru',          name:'ЦОД Новости',     flag:'🖥️', cat:'infra',       max:5 },
+  { id:'antimal',  url:'https://www.anti-malware.ru/rss',                                                                                name:'Anti-Malware.ru', flag:'🔐', cat:'cyber',       max:5 },
+  { id:'infowatch',url:'https://news.google.com/rss/search?q=InfoWatch+кибербезопасность+информационная+безопасность&hl=ru&gl=RU&ceid=RU:ru', name:'InfoWatch', flag:'🔐', cat:'cyber',  max:4 },
 
   // 🇺🇸 США — IT-медиа
   { id:'wired',   url:'https://www.wired.com/feed/rss',                               name:'Wired',           flag:'🇺🇸', cat:'ai',       max:5 },
@@ -725,7 +724,6 @@ async function loadAllFeeds(){
     // Регион — максимальный приоритет
     if (item.region === 'by') score += 60;
     else if (item.region === 'ru') score += 50;
-    else if (item.region === 'spec') score += 35;
     // Ключевые слова (для источников без region)
     if (/беларус|белорус|минск|пвт|htp|htdi|нтди|belarus|minsk|byfly/.test(t)) score += 30;
     if (/россия|российск|москва|russoft|апкит|арпп|арпэ|russia|russian/.test(t)) score += 20;

@@ -369,13 +369,89 @@ const REGIONS = {
 
 // Ключевые слова для авто-категоризации
 const KW = {
-  ai:           ['artificial intelligence',' ai ','neural','llm','gpt','openai','claude','gemini','deepmind','generative','chatgpt','deep learning','language model','искусственный интеллект','нейронн','large language','machine learning'],
-  cyber:        ['cybersecurity','cyber security','cyberattack','hacker','data breach','vulnerability','malware','ransomware','phishing','zero-day','exploit','кибербезопасност','взлом','уязвимост','ddos','firewall'],
-  infra:        ['data center','datacenter','цод','цент.{0,5}обработ','server','облак','cloud infrastructure','hosting','colocation','майнинг','высокопроизводительн','hpc','сеть передачи данных'],
-  software:     ['software','saas','paas','iaas','platform','open.source','fintech','cryptocurrency','crypto','blockchain','bitcoin','ethereum','digital bank','цифров.{0,10}финанс','криптовалют','блокчейн','финтех','приложен','разработ'],
-  regulation:   ['regulation','legislation','ai act','gdpr','compliance','tech policy','digital policy','еаэс','снг','правовой','закон','регулирован','нормативн','директив','госорган','минцифр'],
-  education:    ['education','university','студент','образован','наука','research','stem','кадр','it.специалист','подготовк','обучен','школ','вуз','академи'],
-  construction: ['строительств','цифровизац.{0,10}строй','bim','умный дом','smart building','цифровой двойник','недвижимост','проектирован','архитект'],
+  ai: [
+    // EN
+    'artificial intelligence','machine learning','deep learning','large language model',
+    'language model','neural network','generative ai','chatgpt','openai','anthropic',
+    'claude','gemini','grok','deepmind','mistral','llama','llm','gpt-','copilot',
+    'stable diffusion','midjourney','text-to-image','ai model','ai chip','ai startup',
+    'ai regulation','ai safety','ai agent','autonomous','robotics','computer vision',
+    // RU
+    'искусственный интеллект','машинное обучение','нейронная сеть','нейросет',
+    'генеративн','языковая модель','большая языковая','чат-бот','чатбот',
+    'автономн','роботизац','компьютерное зрение','распознавани','рекомендательн',
+  ],
+  cyber: [
+    // EN
+    'cybersecurity','cyber security','cyberattack','cyber attack','data breach',
+    'hacker','hacking','ransomware','malware','phishing','zero-day','zero day',
+    'exploit','vulnerability','ddos','botnet','firewall','intrusion','antivirus',
+    'endpoint security','threat intelligence','soc ','pentest','bug bounty',
+    'information security','infosec','ciso','apt ','spyware','trojan','rootkit',
+    // RU
+    'кибербезопасност','кибератак','информационная безопасност','утечка данных',
+    'взлом','уязвимост','вирус','шифровальщик','фишинг','мошенничеств',
+    'защита данных','персональные данные','пдн','сертификац','фстэк','фсб',
+  ],
+  infra: [
+    // EN
+    'data center','datacenter','cloud computing','cloud infrastructure','server farm',
+    'colocation','hyperscaler','aws','azure','google cloud','hpc','supercomputer',
+    'network infrastructure','5g','6g','fiber optic','backbone','cdn','edge computing',
+    'kubernetes','docker','devops','microservice','api gateway','load balancer',
+    // RU
+    'цод','центр обработки данных','облачн','серверн','инфраструктур',
+    'вычислительн','телекоммуникац','широкополосн','базовая станция','сотовая связь',
+    'интернет вещей','iot','умная сеть','промышленный интернет',
+  ],
+  software: [
+    // EN
+    'software','saas','paas','iaas','platform','open source','mobile app',
+    'application','operating system','database','erp','crm','api','sdk',
+    'programming','developer','github','startup','tech company','product launch',
+    'fintech','neobank','digital bank','cryptocurrency','blockchain','bitcoin',
+    'ethereum','web3','defi','nft','digital payment','digital wallet',
+    // RU
+    'программное обеспечение','приложени','разработк','платформ','операционная система',
+    'цифровой продукт','цифровые сервис','it-компани','it компани','стартап',
+    'финтех','криптовалют','блокчейн','цифровые финансы','цифровая экономика',
+    'импортозамещени','отечественн','российск.{0,5}программ','российск.{0,5}по',
+  ],
+  regulation: [
+    // EN
+    'regulation','legislation','ai act','gdpr','compliance','tech policy',
+    'digital policy','antitrust','data protection','privacy law','government',
+    'ministry','parliament','congress','senate','bill ','law ','directive',
+    'sanction','ban ','court ruling','fine ','penalty','lawsuit',
+    // RU
+    'регулирован','законодательств','нормативн','правовой','директив',
+    'министерств','правительств','госдума','совет федерации','указ ','постановлени',
+    'закон о','закон об','штраф','суд','иск','санкци','запрет',
+    'минцифр','роскомнадзор','фас ','цб рф','еаэс','снг',
+  ],
+  education: [
+    // EN
+    'education','university','college','school','student','research','science',
+    'academic','stem','scholarship','curriculum','training','bootcamp',
+    'edtech','e-learning','online course','digital literacy','skill',
+    // RU
+    'образован','обучени','университет','институт','академи','школ','вуз',
+    'студент','наук','исследован','подготовк','кадр','специалист',
+    'цифровая грамотност','it-образован','профессиональн','квалификац',
+    'олимпиад','хакатон','конкурс молодых',
+  ],
+  construction: [
+    // EN
+    'digital transformation','digitalization','smart city','smart building',
+    'industry 4.0','internet of things','iot','digital twin','bim',
+    'proptech','agritech','healthtech','medtech','legaltech','govtech',
+    'automation','robotics in','drone','autonomous vehicle','electric vehicle',
+    // RU
+    'цифровизац','цифровая трансформац','умный город','умный дом','умное здани',
+    'цифровой двойник','интернет вещей','индустрия 4','автоматизац',
+    'роботизац','беспилотн','электромобил','телемедицин','электронное правительств',
+    'госуслуг','мфц','цифровые услуги','экосистем','маркетплейс',
+  ],
 };
 
 // ✅ Источники (май 2026) — 32 источника из 15 стран

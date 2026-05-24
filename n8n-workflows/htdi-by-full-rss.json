@@ -1,0 +1,113 @@
+{
+  "name": "HTDI.by → Полноценный RSS Feed",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "htdi-rss",
+        "httpMethod": "GET",
+        "responseMode": "onReceived",
+        "responseData": "allEntries"
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://www.htdi.by",
+        "responseFormat": "string",
+        "options": {}
+      },
+      "name": "Получить страницу HTDI",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "selector": "div[class*='news'], div[class*='card'], div[class*='post'], article",
+        "data": [
+          {
+            "key": "title",
+            "selector": "h2, h3, .title, .headline",
+            "returnValue": "text"
+          },
+          {
+            "key": "link",
+            "selector": "a",
+            "returnValue": "attribute",
+            "attribute": "href"
+          },
+          {
+            "key": "description",
+            "selector": "p, .excerpt, .summary, .text-content",
+            "returnValue": "text"
+          },
+          {
+            "key": "date",
+            "selector": "time, .date, .published, .time",
+            "returnValue": "text"
+          },
+          {
+            "key": "image",
+            "selector": "img",
+            "returnValue": "attribute",
+            "attribute": "src"
+          }
+        ]
+      },
+      "name": "Извлечь новости",
+      "type": "n8n-nodes-base.htmlExtract",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const items = $input.all();\n\nreturn items.map((item, index) => {\n  let link = item.json.link || '';\n  if (link && !link.startsWith('http')) link = 'https://www.htdi.by' + link;\n\n  let image = item.json.image || '';\n  if (image && !image.startsWith('http')) image = 'https://www.htdi.by' + image;\n\n  let desc = (item.json.description || 'Новость с HTDI.by').trim();\n  if (image) {\n    desc = `<img src=\"${image}\" style=\"max-width:100%;height:auto;border-radius:8px;\" alt=\"${item.json.title || ''}\"/><br><br>${desc}`;\n  }\n\n  return {\n    json: {\n      title: (item.json.title || `Новость ${index + 1}`).trim(),\n      link: link,\n      description: desc,\n      pubDate: new Date().toUTCString(),\n      guid: link || `htdi-${Date.now()}-${index}`\n    }\n  };\n});"
+      },
+      "name": "Подготовить данные",
+      "type": "n8n-nodes-base.functionItem",
+      "typeVersion": 1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const items = $input.all();\nlet rss = `<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\">\n<channel>\n<title>HTDI.by — Новости IT Беларуси</title>\n<link>https://www.htdi.by</link>\n<description>Агрегатор технологий и цифровой инфраструктуры</description>\n`;\n\nitems.forEach(item => {\n  rss += `<item>\n<title>${item.json.title}</title>\n<link>${item.json.link}</link>\n<description><![CDATA[${item.json.description}]]></description>\n<pubDate>${item.json.pubDate}</pubDate>\n<guid>${item.json.guid}</guid>\n</item>\n`;\n});\n\nrss += '</channel></rss>';\n\nreturn [{ json: { rss } }];"
+      },
+      "name": "Сгенерировать RSS",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "responseData": "={{ $json.rss }}",
+        "options": {
+          "responseHeaders": [
+            {
+              "name": "Content-Type",
+              "value": "application/rss+xml"
+            }
+          ]
+        }
+      },
+      "name": "Ответить RSS",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1340, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": { "main": [[{ "node": "Получить страницу HTDI" }]] },
+    "Получить страницу HTDI": { "main": [[{ "node": "Извлечь новости" }]] },
+    "Извлечь новости": { "main": [[{ "node": "Подготовить данные" }]] },
+    "Подготовить данные": { "main": [[{ "node": "Сгенерировать RSS" }]] },
+    "Сгенерировать RSS": { "main": [[{ "node": "Ответить RSS" }]] }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1"
+}

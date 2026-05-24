@@ -51,8 +51,11 @@ export default {
         );
         if (!ghResp.ok) throw new Error(`GitHub ${ghResp.status}`);
         const data = await ghResp.json();
-        const content = atob(data.content.replace(/\n/g, ''));
-        return new Response(content, { status: 200, headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' } });
+        // Правильное декодирование UTF-8 из base64 (исправляет кракозябры в кириллице)
+        const binaryStr = atob(data.content.replace(/\n/g, ''));
+        const bytes = Uint8Array.from(binaryStr, c => c.charCodeAt(0));
+        const content = new TextDecoder('utf-8').decode(bytes);
+        return new Response(content, { status: 200, headers: { ...CORS, 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-cache' } });
       } catch (e) {
         return new Response(JSON.stringify([]), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
       }

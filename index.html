@@ -217,7 +217,7 @@
 
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-label"><span></span>Live</div>
+    <div class="hero-label" translate="no"><span></span>LIVE</div>
     <h1>Технологии Беларуси<br>и мировые тренды</h1>
     <p class="hero-desc">AI, кибербезопасность, финтех, регулирование и цифровая экономика в реальном времени.</p>
     <div class="hero-stats">
@@ -462,18 +462,18 @@ const SOURCES = [
 
   // ═══ 🇷🇺 РОССИЯ ═══
   { id:'tass',     url:'https://tass.ru/rss/v2.xml',                                                                                     name:'ТАСС',            flag:'🇷🇺', region:'ru', cat:'ai',         max:6 },
-  { id:'ria',      url:'https://ria.ru/export/rss2/technology/index.xml',                                                                name:'РИА Новости',     flag:'🇷🇺', region:'ru', cat:'ai',         max:6 },
-  { id:'rbc',      url:'https://rssexport.rbc.ru/rbcnews/news/30/full.rss',                                                              name:'РБК Технологии',  flag:'🇷🇺', region:'ru', cat:'ai',         max:6 },
+  { id:'ria',      url:'https://ria.ru/export/rss2/index.xml',                                                                          name:'РИА Новости',     flag:'🇷🇺', region:'ru', cat:'ai',         max:6 },
+  { id:'rbc',      url:'https://news.google.com/rss/search?q=РБК+технологии+IT&hl=ru&gl=RU&ceid=RU:ru',                                name:'РБК Технологии',  flag:'🇷🇺', region:'ru', cat:'ai',         max:6 },
   { id:'kom',      url:'https://www.kommersant.ru/RSS/news.xml',                                                                         name:'Коммерсантъ',     flag:'🇷🇺', region:'ru', cat:'ai',         max:5 },
   { id:'cnews',    url:'https://www.cnews.ru/inc/rss/news.xml',                                                                          name:'CNews',           flag:'🇷🇺', region:'ru', cat:'ai',         max:6 },
   { id:'tadviser', url:'https://news.google.com/rss/search?q=site:tadviser.ru+технологии+IT&hl=ru&gl=RU&ceid=RU:ru',                      name:'TAdviser',        flag:'🇷🇺', region:'ru', cat:'ai',         max:5 },
 
   // ═══ 🔬 СПЕЦИАЛИЗИРОВАННЫЕ ═══
   { id:'habr',     url:'https://habr.com/ru/rss/hub/artificial_intelligence/all/',                                                       name:'Habr ИИ',         flag:'🤖', cat:'ai',         max:5 },
-  { id:'reuters',  url:'https://feeds.reuters.com/reuters/technologyNews',                                                               name:'Reuters Tech',    flag:'🌍', cat:'ai',         max:5 },
+  { id:'reuters',  url:'https://news.google.com/rss/search?q=reuters+technology+AI+digital&hl=en&gl=US&ceid=US:en',                     name:'Reuters Tech',    flag:'🌍', cat:'ai',         max:5 },
   { id:'dcunion',  url:'https://dcunion.ru/feed',                                                                                        name:'DC Union',        flag:'🖥️', cat:'infra',       max:5 },
   { id:'gn-dc',    url:'https://news.google.com/rss/search?q=дата-центр+ЦОД+серверная+инфраструктура&hl=ru&gl=RU&ceid=RU:ru',          name:'ЦОД Новости',     flag:'🖥️', cat:'infra',       max:5 },
-  { id:'antimal',  url:'https://www.anti-malware.ru/rss',                                                                                name:'Anti-Malware.ru', flag:'🔐', cat:'cyber',       max:5 },
+  { id:'antimal',  url:'https://news.google.com/rss/search?q=anti-malware+кибербезопасность+уязвимость&hl=ru&gl=RU&ceid=RU:ru',        name:'Anti-Malware.ru', flag:'🔐', cat:'cyber',       max:5 },
   { id:'infowatch',url:'https://news.google.com/rss/search?q=InfoWatch+кибербезопасность+информационная+безопасность&hl=ru&gl=RU&ceid=RU:ru', name:'InfoWatch', flag:'🔐', cat:'cyber',  max:4 },
 
   // 🇺🇸 США — IT-медиа
@@ -482,7 +482,7 @@ const SOURCES = [
   { id:'ars',     url:'https://feeds.arstechnica.com/arstechnica/index',              name:'Ars Technica',    flag:'🇺🇸', cat:'ai',       max:4 },
   { id:'verge',   url:'https://www.theverge.com/rss/index.xml',                       name:'The Verge',       flag:'🇺🇸', cat:'ai',       max:5 },
   { id:'mit',     url:'https://www.technologyreview.com/feed/',                       name:'MIT Tech Review', flag:'🇺🇸', cat:'ai',          max:4 },
-  { id:'a16z',    url:'https://a16z.com/feed/',                                       name:'a16z',            flag:'🇺🇸', cat:'ai',          max:3 },
+  { id:'a16z',    url:'https://a16z.com/feed',                                        name:'a16z',            flag:'🇺🇸', cat:'ai',          max:3 },
   { id:'brook',   url:'https://www.brookings.edu/feed/',                              name:'Brookings',       flag:'🇺🇸', cat:'regulation',  max:3 },
 
   // 🇺🇸 США — Кибербезопасность
@@ -674,6 +674,7 @@ function parseFeedXml(xml, src){
       cat: categorize(title, desc, src.cat),
       flag: src.flag,
       source: src.name,
+      region: src.region || '',
       date: pubRaw ? new Date(pubRaw) : new Date(),
       title,
       desc,
@@ -800,6 +801,7 @@ function setRegion(r){
   const isExpert = r === 'all';
   toggleExpertSection(isExpert);
   document.getElementById('grid').style.display = isExpert ? 'none' : '';
+  document.querySelector('.section-header').style.display = isExpert ? 'none' : '';
   document.querySelectorAll('.region-btn').forEach(b=>{
     const active = b.dataset.region===r;
     b.classList.toggle('active',active);
@@ -1138,6 +1140,7 @@ renderGrid();
 loadAllFeeds();
 loadExpertNews();
 toggleExpertSection(true); // показываем при старте (регион = all)
+document.querySelector('.section-header').style.display = 'none';
 document.getElementById('grid').style.display = 'none'; // лента скрыта при старте
 </script>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async></script>

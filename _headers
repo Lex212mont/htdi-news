@@ -1,4 +1,19 @@
 /*
-  Cache-Control: public, max-age=31536000
+  Безопасность
+*/
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/*
+  Кэширование (новостной сайт — нужен свежий контент)
+  index.html и встроенный JS кэшируем мягко.
+  API-эндпоинты в _worker.js имеют свои заголовки.
+*/
+index.html
+  Cache-Control: public, max-age=120, stale-while-revalidate=3600
+
+/*
+  Для остальных статических ответов (если появятся ассеты)
+*/
+  Cache-Control: public, max-age=31536000, immutable

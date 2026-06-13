@@ -1,10 +1,32 @@
 #!/usr/bin/env python3
 """Daily НТДИ news digest → @BELTIME_NEWS"""
-import os, time, datetime, requests, feedparser, re
+import os, time, datetime, requests, feedparser, re, json
 from html import escape
 
 TOKEN   = os.environ["TELEGRAM_BOT_TOKEN"]
 CHAT_ID = "-1003929211757"
+
+SENT_FILE = ".sent-news.json"
+MAX_SENT = 150
+
+def load_sent_links():
+    try:
+        with open(SENT_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return set(data.get("links", []))
+    except Exception:
+        return set()
+
+def save_sent_links(links):
+    try:
+        to_save = list(links)[-MAX_SENT:]
+        with open(SENT_FILE, "w", encoding="utf-8") as f:
+            json.dump({
+                "updated": datetime.datetime.utcnow().isoformat() + "Z",
+                "links": to_save
+            }, f, indent=2, ensure_ascii=False)
+    except Exception as ex:
+        print("WARN: cannot save sent state:", ex)
 
 SOURCES = [
     # BY
@@ -130,8 +152,24 @@ def send(text):
     print("Sent OK, msg_id:", r.json()["result"]["message_id"])
 
 if __name__ == "__main__":
+    sent = load_sent_links()
     items = fetch_all()
-    print(f"Fetched {len(items)} items, top score: {items[0]['score'] if items else 0}")
-    for msg in build_messages(items):
+    new_items = [it for it in items if it.get("link") and it["link"] not in sent]
+    print(f"Fetched {len(items)} items, {len(new_items)} new (after dedup)")
+
+    if not new_items:
+        print("No new items to send, skipping digest.")
+        save_sent_links(sent)
+        exit(0)
+
+    print(f"Top score of new: {new_items[0]['score'] if new_items else 0}")
+    for msg in build_messages(new_items):
         send(msg)
         time.sleep(1)
+
+    # Запоминаем отправленные (чтобы не повторяться в следующие дни)
+    for it in new_items[:25]:
+        if it.get("link"):
+            sent.add(it["link"])
+    save_sent_links(sent)
+    print("Sent state updated.")

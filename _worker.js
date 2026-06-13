@@ -36,7 +36,7 @@ export default {
         if (!resp.ok) return new Response(JSON.stringify({ error: `Upstream ${resp.status}` }), { status: resp.status, headers: { ...CORS, 'Content-Type': 'application/json' } });
         const body = await resp.text();
         const ct = resp.headers.get('content-type') || 'application/xml';
-        return new Response(body, { status: 200, headers: { ...CORS, 'Content-Type': ct, 'Cache-Control': 'public, s-maxage=300, max-age=60' } });
+        return new Response(body, { status: 200, headers: { ...CORS, 'Content-Type': ct, 'Cache-Control': 'public, s-maxage=300, max-age=60, stale-while-revalidate=1800' } });
       } catch (e) {
         return new Response(JSON.stringify({ error: e.message }), { status: 502, headers: { ...CORS, 'Content-Type': 'application/json' } });
       }
@@ -55,7 +55,7 @@ export default {
         const binaryStr = atob(data.content.replace(/\n/g, ''));
         const bytes = Uint8Array.from(binaryStr, c => c.charCodeAt(0));
         const content = new TextDecoder('utf-8').decode(bytes);
-        return new Response(content, { status: 200, headers: { ...CORS, 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-cache' } });
+        return new Response(content, { status: 200, headers: { ...CORS, 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'public, s-maxage=300, max-age=60, stale-while-revalidate=3600' } });
       } catch (e) {
         return new Response(JSON.stringify([]), { status: 200, headers: { ...CORS, 'Content-Type': 'application/json' } });
       }
